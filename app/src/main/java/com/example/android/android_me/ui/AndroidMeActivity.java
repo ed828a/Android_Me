@@ -16,17 +16,62 @@
 
 package com.example.android.android_me.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.example.android.android_me.R;
+import com.example.android.android_me.data.AndroidImageAssets;
 
 // This activity will display a custom Android image composed of three body parts: head, body, and legs
-public class AndroidMeActivity extends AppCompatActivity {
+public class AndroidMeActivity extends AppCompatActivity
+        implements PartsListFragment.OnPartsListSelected{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_android_me);
+
+        BodyPartFragment headFragment = new BodyPartFragment();
+        headFragment.setmImageIndex(1);
+        BodyPartFragment bodyFragment = new BodyPartFragment();
+        bodyFragment.setmImageIndex(2);
+        BodyPartFragment legFragment = new BodyPartFragment();
+        legFragment.setmImageIndex(1);
+
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.add(R.id.head_container, headFragment, "head_fragment");
+//        fragmentTransaction.add(R.id.body_container, bodyFragment, "body_fragment");
+//        fragmentTransaction.add(R.id.leg_container, legFragment, "leg_fragment");
+//        fragmentTransaction.commit();
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.head_container, headFragment, "head_fragment")
+                .add(R.id.body_container, bodyFragment, "body_fragment")
+                .add(R.id.leg_container, legFragment, "leg_fragment")
+                .commit();
+    }
+
+    @Override
+    public void onPartsListSelected(int position, ImageView bodyPartView) {
+        if (position > 23){
+            FrameLayout legLayout = (FrameLayout) findViewById(R.id.leg_container);
+            ImageView legImageView = (ImageView)legLayout.findViewById(R.id.body_part_imageView);
+            legImageView.setImageResource(AndroidImageAssets.getAll().get(position));
+        } else if (position > 11){
+            FrameLayout bodyLayout = (FrameLayout) findViewById(R.id.body_container);
+            ImageView bodyImageView = (ImageView)bodyLayout.findViewById(R.id.body_part_imageView);
+            bodyImageView.setImageResource(AndroidImageAssets.getAll().get(position));
+        } else if (position >= 0){
+            FrameLayout headLayout = (FrameLayout) findViewById(R.id.head_container);
+            ImageView headImageView = (ImageView)headLayout.findViewById(R.id.body_part_imageView);
+            headImageView.setImageResource(AndroidImageAssets.getAll().get(position));
+        }
     }
 }
