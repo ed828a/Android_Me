@@ -34,6 +34,7 @@ public class BodyPartFragment extends Fragment {
     // Final Strings to store state information about the list of images and list index
     public static final String IMAGE_ID_LIST = "image_ids";
     public static final String LIST_INDEX = "list_index";
+    public static final String BODY_SECTION_NUMBER = "body_section_number";
 
     // Tag for logging
     private static final String TAG = "BodyPartFragment";

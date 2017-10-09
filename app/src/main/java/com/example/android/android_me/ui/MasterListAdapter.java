@@ -29,6 +29,7 @@ import java.util.List;
 // Custom adapter class that displays a list of Android-Me images in a GridView
 public class MasterListAdapter extends BaseAdapter {
 
+
     // Keeps track of the context and list of images to display
     private Context mContext;
     private List<Integer> mImageIds;
