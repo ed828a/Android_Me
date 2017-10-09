@@ -23,8 +23,25 @@ import java.util.List;
 public class MasterListFragment extends Fragment {
 
     private List<Integer> mImageIds;
+    private OnImageClickListener mCallback = null;
 
     public MasterListFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnImageClickListener) {
+            mCallback = (OnImageClickListener) context;
+        } else {
+            throw new ClassCastException("OnImageClickListener must be implemented by " + context.toString());
+        }
+
+//        try {
+//            mCallback = (OnImageClickListener) context;
+//        } catch (Exception e) {
+//            throw new ClassCastException("OnImageClickListener must be implemented by " + context.toString());
+//        }
     }
 
     @Nullable
@@ -43,18 +60,18 @@ public class MasterListFragment extends Fragment {
         return view;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView partImageView;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
 
-            partImageView = (ImageView)itemView.findViewById(R.id.body_part_image_view);
+            partImageView = (ImageView) itemView.findViewById(R.id.body_part_image_view);
         }
     }
 
-    class RecyclerMasterListAdapter extends RecyclerView.Adapter<ViewHolder>{
+    private class RecyclerMasterListAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -66,7 +83,7 @@ public class MasterListFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
 
             // Define the layout parameters
             holder.partImageView.setAdjustViewBounds(true);
@@ -75,11 +92,22 @@ public class MasterListFragment extends Fragment {
 
             holder.partImageView.setImageResource(mImageIds.get(position));
 
+            holder.partImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = holder.getAdapterPosition();
+                    mCallback.onImageSelected(position);
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
             return mImageIds.size();
         }
+    }
+
+    public interface OnImageClickListener {
+        void onImageSelected(int position);
     }
 }
