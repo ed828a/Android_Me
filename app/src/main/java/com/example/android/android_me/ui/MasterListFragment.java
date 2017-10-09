@@ -36,12 +36,6 @@ public class MasterListFragment extends Fragment {
         } else {
             throw new ClassCastException("OnImageClickListener must be implemented by " + context.toString());
         }
-
-//        try {
-//            mCallback = (OnImageClickListener) context;
-//        } catch (Exception e) {
-//            throw new ClassCastException("OnImageClickListener must be implemented by " + context.toString());
-//        }
     }
 
     @Nullable

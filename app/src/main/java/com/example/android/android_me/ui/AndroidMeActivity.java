@@ -25,20 +25,12 @@ import com.example.android.android_me.data.AndroidImageAssets;
 
 // This activity will display a custom Android image composed of three body parts: head, body, and legs
 public class AndroidMeActivity extends AppCompatActivity {
+    public static final String POSITION = "position";
+    public static final String SECTION = "section";
+    public static final String INDEX = "index";
 
-    // TODO (1) Create a fragment_master_list.xml layout file to display all our images; this should be a GridView
-
-    // TODO (2) Create a new class called MasterListFragment which will display the GridView list of ALL AndroidMe images
-        // In the fragment class, you'll need to implement an empty constructor, and onCreateView
-
-    // TODO (3) In the MasterListFragment class, create a new MasterListAdapter and set it on the GridView
-        // The MasterListAdapter code is provided; it creates the ImageViews that are contained in the GridView
-        // The adapter takes as parameters (Context context, List<Integer> imageIds)
-
-    // After creating the fragment..
-    // TODO (4) Create a new Activity named MainActivity and a corresponding layout file that displays a MasterListFragment
-        // Remember, to display a static fragment in a layout file, use the <fragment> tag
-
+    private int mPosition = 0;
+    private int mIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +40,23 @@ public class AndroidMeActivity extends AppCompatActivity {
         // Only create new fragments when there is no previously saved state
         if(savedInstanceState == null) {
 
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null){
+                mPosition = bundle.getInt(POSITION);
+                if (mPosition > 23){
+                    mIndex = mPosition - 24;
+                } else if (mPosition > 11){
+                    mIndex = mPosition -12;
+                } else if (mPosition >= 0){
+                    mIndex = mPosition;
+                }
+            }
             // Create a new head BodyPartFragment
             BodyPartFragment headFragment = new BodyPartFragment();
 
             // Set the list of image id's for the head fragment and set the position to the second image in the list
             headFragment.setImageIds(AndroidImageAssets.getHeads());
-            headFragment.setListIndex(1);
+            headFragment.setListIndex(mIndex);
 
             // Add the fragment to its container using a FragmentManager and a Transaction
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -66,12 +69,14 @@ public class AndroidMeActivity extends AppCompatActivity {
 
             BodyPartFragment bodyFragment = new BodyPartFragment();
             bodyFragment.setImageIds(AndroidImageAssets.getBodies());
+            bodyFragment.setListIndex(mIndex);
             fragmentManager.beginTransaction()
                     .add(R.id.body_container, bodyFragment)
                     .commit();
 
             BodyPartFragment legFragment = new BodyPartFragment();
             legFragment.setImageIds(AndroidImageAssets.getLegs());
+            legFragment.setListIndex(mIndex);
             fragmentManager.beginTransaction()
                     .add(R.id.leg_container, legFragment)
                     .commit();
