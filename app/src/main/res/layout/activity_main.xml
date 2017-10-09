@@ -24,4 +24,3 @@ This means creating a new layout folder for tablet screens and another activity_
 <!-- TODO (2) Build the layout to display the MasterListFragment and all BodyPartFragments -->
 <!-- Specifically, this layout should be a horizontal LinearLayout with the MasterListFragment on the left of the
  screen and three vertically arranged FrameLayout containers for the dynamic BodyPartFragments on the right side -->
-
